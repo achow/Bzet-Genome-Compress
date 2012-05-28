@@ -1,0 +1,17 @@
+Bzet.h can be found at https://github.com/achow/Bzet
+Code used to generate JWB-unified-file.txt, the input to gencomp2.cpp, can be found at http://www.ics.uci.edu/~dnazip/index.html
+The code for the WAH implementation used can be found at https://github.com/stefanwoj89/BZET-RLE-API
+
+Defines:
+    BZET_IMPL_  Including Bzet.h also includes the Bzet implementation
+    NODE_ELS    Flavor of Bzet to use, default 8, must be a power of 2 greater 
+                than 4
+    STEP_BYTES  Size of auxiliary array elements, recommended default is 2
+
+indexes/    Contains integer positions corresponding to the chromosome/tag 
+            positional differences
+            Filenames in form: [tag].[difftype].indexes
+RLEindex.py Takes in a [tag].[difftype].indexes from stdin and outputs the size
+            of the WAH-encoded positions
+tryall.sh   Spawns RLEindex.py for each .indexes file in indexes/
+gencomp2.cpp    The genome compression implementation utilizing Bzet
