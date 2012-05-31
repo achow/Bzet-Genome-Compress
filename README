@@ -3,7 +3,7 @@ Code used to generate JWB-unified-file.txt, the input file, can be found at http
 The code for the WAH* implementation used can be found at https://github.com/stefanwoj89/BZET-RLE-API
 The code for FastBit WAH was provided by Kesheng Wu.
 
-Defines:
+Defines when using Bzet.h:
     BZET_IMPL_  Including Bzet.h also includes the Bzet implementation
     NODE_ELS    Flavor of Bzet to use, default 8, must be a power of 2 greater 
                 than 4
