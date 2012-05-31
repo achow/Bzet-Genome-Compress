@@ -16,8 +16,6 @@
 #include <sys/times.h>
 #include <unistd.h>
 
-#define STEP_BYTES 2
-
 #define BZET_IMPL_
 #include "Bzet.h"
 
@@ -91,36 +89,6 @@ size_t encsnps(vector<GenDiff>& vgf,
     fwrite(snps, 1, (nsnps + 3) / 4, stdout);
 #endif
 
-#ifdef OUTPUT_INDEXES
-    string fname = itstart->tag + ".snp.indexes";
-    FILE *fi = fopen(fname.c_str(), "w");
-    for (vector<GenDiff>::iterator it = itstart; it != itend; it++) {
-        char intbuf[20];
-        memset(intbuf, 0x00, sizeof(intbuf));
-        sprintf(intbuf, "%d", it->pos);
-        string buf(intbuf);
-        buf += "\n";
-        fwrite(buf.c_str(), strlen(buf.c_str()), 1, fi);
-    }
-    fclose(fi);
-#endif
-
-#ifdef VERIFY
-    FILE *f = fopen("tempfile.txt", "w+b");
-    snpdiffs.exportTo(f);
-    rewind(f);
-    BZET v;
-    v.importFrom(f, snpdiffs.size());
-    cerr << "VERIFY: " << v.count() << " diffs" << endl;
-    cerr << "v == snpdiffs: " << (v == snpdiffs) << endl;
-    cerr << "v size: " << v.size() << endl;
-    fseek(f, 0, SEEK_END);
-    size_t fsize = ftell(f);
-    cerr << "file size: " << fsize << endl;
-    assert(v.count() == snpdiffs.count());
-    fclose(f);
-#endif
-
 #ifdef OUTPUT
     cerr << "Size is " << (snpdiffs.size() + (nsnps + 3) / 4) << endl; 
     cerr << "Number of SNPs: " << snpdiffs.count() << " = " << nsnps << endl;
@@ -156,20 +124,6 @@ size_t encdels(vector<GenDiff>& vgf,
     fwrite(bzbuf, 1, dels.size(), stdout);
     delete[] bzbuf;*/
     dels.exportTo(stdout);
-#endif
-
-#ifdef OUTPUT_INDEXES
-    string fname = itstart->tag + ".del.indexes";
-    FILE *fi = fopen(fname.c_str(), "w");
-    for (vector<GenDiff>::iterator it = itstart; it != itend; it++) {
-        char intbuf[20];
-        memset(intbuf, 0x00, sizeof(intbuf));
-        sprintf(intbuf, "%d", it->pos);
-        string buf(intbuf);
-        buf += "\n";
-        fwrite(buf.c_str(), strlen(buf.c_str()), 1, fi);
-    }
-    fclose(fi);
 #endif
 
 #ifdef OUTPUT
@@ -280,21 +234,6 @@ size_t encins(vector<GenDiff>& vgf,
     ins.exportTo(stdout);
     fwrite(insbuf, 1, insbufloc, stdout);
 #endif
-
-#ifdef OUTPUT_INDEXES
-    string fname = itstart->tag + ".ins.indexes";
-    FILE *fi = fopen(fname.c_str(), "w");
-    for (vector<GenDiff>::iterator it = itstart; it != itend; it++) {
-        char intbuf[20];
-        memset(intbuf, 0x00, sizeof(intbuf));
-        sprintf(intbuf, "%d", it->pos);
-        string buf(intbuf);
-        buf += "\n";
-        fwrite(buf.c_str(), strlen(buf.c_str()), 1, fi);
-    }
-    fclose(fi);
-#endif
-
 
 #ifdef OUTPUT
     cerr << "Ins size: " << (ins.size() + insbufloc) << endl;
